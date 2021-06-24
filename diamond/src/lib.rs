@@ -44,8 +44,15 @@ impl Leds {
         if let Some(periph) = nrf52840_hal::pac::Peripherals::take() {
             let pins = Parts::new(periph.P0);
 
-            // Note: `Level::High` turns the LEDs *off*
+            // TODO: these hints look different without Rust-Analyzer...
             let pin_1 = pins.p0_13.degrade().into_push_pull_output(Level::High);
+            //                          ✏️  ^^^^^^^^^  ^^^^^^    ^^^^^^^^^^^^^^^^^^^^  ^^^^^^
+            // get ownership of P0_13 representation     |       configure pin as       High = LED off
+            // (nobody else can have it now!)            |       push-pull output
+            //                                           |
+            //                              degrade Type from "this specific P0_13"
+            //                              to "some Pin" for easier handling
+
             let pin_2 = pins.p0_14.degrade().into_push_pull_output(Level::High);
             let pin_3 = pins.p0_15.degrade().into_push_pull_output(Level::High);
             let pin_4 = pins.p0_16.degrade().into_push_pull_output(Level::High);

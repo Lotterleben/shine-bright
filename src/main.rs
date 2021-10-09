@@ -24,6 +24,7 @@ pub enum BoardError {
 
 /// Represents one single LED
 pub struct Led {
+    /// the pin used to control this LED
     pin: Pin<Output<PushPull>>,
 }
 
@@ -34,10 +35,11 @@ pub struct Board {
     pub bottom_left_led: Led,
     pub bottom_right_led: Led,
 
-    /// This is obviously not an LED; but needed for convenient blinking :)
-    pub timer: Timer<TIMER0, OneShot>,
+    // needed for convenient blinking :)
+    timer: Timer<TIMER0, OneShot>,
 }
 
+// implements behavior of `Led` instances
 impl Led {
     pub fn on(&mut self) {
         self.pin.set_low().unwrap();
@@ -49,6 +51,7 @@ impl Led {
     }
 }
 
+// implements behavior of `Board` instances
 impl Board {
     pub fn init() -> Result<Board, BoardError> {
         if let Some(periph) = nrf52840_hal::pac::Peripherals::take() {

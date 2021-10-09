@@ -18,22 +18,22 @@ use panic_halt as _; // defmt-compatible panic handler
 const WAIT_CYCLES: u32 = 400_000;
 
 #[derive(Debug)]
-pub enum BoardError {
+enum BoardError {
     PeripheralsAlreadyInUse,
 }
 
 /// Represents one single LED
-pub struct Led {
+struct Led {
     /// the pin used to control this LED
     pin: Pin<Output<PushPull>>,
 }
 
 /// Represents the nrf52840 Development Kit (constrained to the parts we're actually using)
-pub struct Board {
-    pub top_left_led: Led,
-    pub top_right_led: Led,
-    pub bottom_left_led: Led,
-    pub bottom_right_led: Led,
+struct Board {
+    top_left_led: Led,
+    top_right_led: Led,
+    bottom_left_led: Led,
+    bottom_right_led: Led,
 
     // needed for convenient blinking :)
     timer: Timer<TIMER0, OneShot>,
@@ -41,19 +41,19 @@ pub struct Board {
 
 // implements behavior of `Led` instances
 impl Led {
-    pub fn on(&mut self) {
+    fn on(&mut self) {
         self.pin.set_low().unwrap();
         //                 ^^^^^^^^ note: this panics on error
     }
 
-    pub fn off(&mut self) {
+    fn off(&mut self) {
         self.pin.set_high().unwrap();
     }
 }
 
 // implements behavior of `Board` instances
 impl Board {
-    pub fn init() -> Result<Board, BoardError> {
+    fn init() -> Result<Board, BoardError> {
         if let Some(periph) = nrf52840_hal::pac::Peripherals::take() {
             let pins = Parts::new(periph.P0);
 

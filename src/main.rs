@@ -18,7 +18,7 @@ use panic_halt as _; // defmt-compatible panic handler
 const WAIT_CYCLES: u32 = 400_000;
 
 #[derive(Debug)]
-pub enum LedError {
+pub enum BoardError {
     PeripheralsAlreadyInUse,
 }
 
@@ -50,7 +50,7 @@ impl Led {
 }
 
 impl Board {
-    pub fn init() -> Result<Board, LedError> {
+    pub fn init() -> Result<Board, BoardError> {
         if let Some(periph) = nrf52840_hal::pac::Peripherals::take() {
             let pins = Parts::new(periph.P0);
 
@@ -86,7 +86,7 @@ impl Board {
         //  ^^ note: final statements without a `;` are return statements
         //     (we're returning our new `Board` here)
         } else {
-            Err(LedError::PeripheralsAlreadyInUse)
+            Err(BoardError::PeripheralsAlreadyInUse)
         }
     }
 }

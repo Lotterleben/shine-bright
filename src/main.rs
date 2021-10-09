@@ -29,6 +29,7 @@ struct Led {
 }
 
 /// Represents the nrf52840 Development Kit (constrained to the parts we're actually using)
+#[allow(dead_code)] // silence warnings about unused leds
 struct Board {
     top_left_led: Led,
     top_right_led: Led,

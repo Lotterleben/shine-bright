@@ -46,7 +46,7 @@ In the console, you should see:
 
 On the [nRF528540 Development Kit], you should see
 
-TODO add gif of blinking LEDs here
+![](blinky.gif)
 
 
 

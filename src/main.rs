@@ -13,7 +13,7 @@ use nrf52840_hal::{
 };
 
 use defmt_rtt as _; // global logger
-use panic_halt as _;
+use panic_halt as _; // defmt-compatible panic handler
 
 const WAIT_CYCLES: u32 = 400_000;
 
@@ -112,6 +112,7 @@ fn main() -> ! {
     // because it has been thrown away forever
     //board.bottom_right.off();
 
+    // the actual blinking!
     loop {
         board.timer.delay(WAIT_CYCLES);
         my_led.off();

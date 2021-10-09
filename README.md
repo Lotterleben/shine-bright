@@ -25,15 +25,23 @@ $ cargo run
 In the console, you should see:
 
 ```console
-   Compiling diamond v0.1.0 (/Users/lottesteenbrink/talks/muc++/shine-bright/diamond)
+➜  shine-bright git:(main) ✗ cr  
    Compiling shine-bright v0.1.0 (/Users/lottesteenbrink/talks/muc++/shine-bright)
-    Finished dev [unoptimized + debuginfo] target(s) in 1.23s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.95s
      Running `probe-run --chip nrf52840 target/thumbv7em-none-eabihf/debug/shine-bright`
-(HOST) INFO  flashing program (12.33 KiB)
+(HOST) INFO  flashing program (13.55 KiB)
 (HOST) INFO  success!
 ────────────────────────────────────────────────────────────────────────────────
  INFO  hello leds
-└─ shine_bright::__cortex_m_rt_main @ src/main.rs:12
+└─ shine_bright::__cortex_m_rt_main @ src/main.rs:97
+ INFO  ⚪️
+└─ shine_bright::__cortex_m_rt_main @ src/main.rs:119
+ INFO  🚨
+└─ shine_bright::__cortex_m_rt_main @ src/main.rs:123
+ INFO  ⚪️
+└─ shine_bright::__cortex_m_rt_main @ src/main.rs:119
+ INFO  🚨
+└─ shine_bright::__cortex_m_rt_main @ src/main.rs:123
 ```
 
 On the [nRF528540 Development Kit], you should see

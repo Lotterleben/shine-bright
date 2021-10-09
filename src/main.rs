@@ -40,7 +40,7 @@ struct Board {
     timer: Timer<TIMER0, OneShot>,
 }
 
-// implements behavior of `Led` instances
+// implements functionality for `Led` instances
 impl Led {
     fn on(&mut self) {
         self.pin.set_low().unwrap();
@@ -52,16 +52,17 @@ impl Led {
     }
 }
 
-// implements behavior of `Board` instances
+// implements functionality for `Board` instances
 impl Board {
     fn init() -> Result<Board, BoardError> {
-        if let Some(periph) = nrf52840_hal::pac::Peripherals::take() {
-            let pins = Parts::new(periph.P0);
+        if let Some(peripherals) = nrf52840_hal::pac::Peripherals::take() {
+            // for each pin at GPIO Port 0, generate a token representing it
+            let pins = Parts::new(peripherals.P0);
 
             let top_left_led_pin = pins.p0_13.degrade().into_push_pull_output(Level::High);
-            //                          ✏️             ^^^^^^^^^  ^^^^^^    ^^^^^^^^^^^^^^^^^^^^  ^^^^^^
-            //           get ownership of P0_13 representation     |       configure pin as       High = LED off
-            //           (nobody else can have it now!)            |       push-pull output
+            //                          ✏️             ^^^^^^^^^  ^^^^^^    ^^^^^^^^^^^^^^^^^^^^     ^^^^^^
+            //           get ownership of P0_13 representation     |       configure pin so we        High = LED off
+            //           (nobody else can have it now!)            |       can set it high / low
             //                                                     |
             //                                        degrade Type from "this specific P0_13"
             //                                        to "some Pin" for easier handling
@@ -70,7 +71,7 @@ impl Board {
             let bottom_left_led_pin = pins.p0_15.degrade().into_push_pull_output(Level::High);
             let bottom_right_led_pin = pins.p0_16.degrade().into_push_pull_output(Level::High);
 
-            let timer = nrf52840_hal::Timer::new(periph.TIMER0);
+            let timer = nrf52840_hal::Timer::new(peripherals.TIMER0);
 
             Ok(Board {
                 top_left_led: Led {
@@ -106,7 +107,7 @@ fn main() -> ! {
     my_led.on();
 
     //✏️ This will lead to a compiler error: `my_led` already owns the `top_right` led
-    //let my_second_led = board.top_right;
+    //let my_second_led = board.top_right_led;
 
     // this LED stays on forever:
     board.bottom_right_led.on(); // make it shine
@@ -114,7 +115,7 @@ fn main() -> ! {
 
     // ✏️ This will lead to a compiler error: nobody can take ownership of `bottom_right`,
     // because it has been thrown away forever
-    //board.bottom_right.off();
+    //board.bottom_right_led.off();
 
     // the actual blinking!
     loop {

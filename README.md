@@ -49,6 +49,26 @@ On the [nRF528540 Development Kit], you should see
 ![](resources/blinky.gif)
 
 
+## Checking release binary size
+
+```console
+$ cargo objcopy --release -- -O binary shine-bright.bin
+```
+
+*without `defmt`*, this will give you a binary of `996 byte`:
+
+```console
+$ ls -lh shine-bright.bin
+-rwxr-xr-x  1 lottesteenbrink  staff   996B Oct 10 18:09 shine-bright.bin
+```
+
+*with `defmt`*, we're looking at a `1.9kB` binary:
+
+``` console
+$ ls -lh shine-bright.bin
+-rwxr-xr-x  1 lottesteenbrink  staff   1.9K Oct 10 18:11 shine-bright.bin
+```
+
 
 ## Background Information
 
